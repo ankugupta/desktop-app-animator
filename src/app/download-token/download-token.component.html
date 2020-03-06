@@ -1,0 +1,10 @@
+<div mat-dialog-content>
+    <mat-form-field appearance="outline" color="warn">
+        <mat-label>Enter download token:</mat-label>
+        <input matInput placeholder="Token Number">
+    </mat-form-field>
+</div>
+<div mat-dialog-actions class="text-center">
+    <button mat-raised-button color="primary" class="btn">Download</button>
+    <button mat-raised-button (click)="close()">No Thanks</button>
+</div>

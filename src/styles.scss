@@ -1,1 +1,102 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+    height: 100%;
+    background-color: #f8f8f8;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+p {
+    margin: 0 0 20px 0 !important;
+}
+
+.sidenav-container {
+    height: 100%;
+    .mainContainer {
+        padding: 30px 10px;
+        height: 100%;
+    }
+    .sidenav {
+        width: 120px;
+        border-right: 0;
+        box-shadow: rgba(0, 0, 0, 0.1) -40px 0px 20px 30px;
+        background: #ffffff;
+        .logo {
+            text-align: center;
+            margin: 15px 0 0 0;
+            img {
+                width: 75%;
+            }
+        }
+        .mat-list-item-content {
+            justify-content: center;
+            flex-direction: column !important;
+        }
+        a {
+            color: #9b9b9b;
+            height: 90px !important;
+            margin-bottom: 10px;
+        }
+    }
+    .sidenav .mat-toolbar {
+        background: inherit;
+    }
+    .mat-toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background: #ffffff;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px -10px 40px 0px;
+        .mat-toolbar-row {
+            padding-right: 32px;
+        }
+    }
+}
+
+.mat-card {
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 4px 16px !important;
+    border-radius: 8px !important;
+    margin-bottom: 30px;
+    text-align: center;
+    .mat-card-title {
+        font-size: 20px !important;
+    }
+}
+
+h2 {
+    margin-bottom: 20px;
+    font-size: 35px;
+    color: #4a4a4a;
+    font-weight: 100;
+}
+
+.btn {
+    background: #d34d4a !important;
+    outline: none;
+}
+
+.btn:hover {
+    background: #b83f3d !important;
+    color: #fff !important;
+}
+
+.mat-form-field {
+    width: 100%;
+}
+
+button:focus {
+    outline: none;
+}
+
+.cdk-overlay-pane {
+    margin: auto !important;
+}
+
+.cdk-overlay-dark-backdrop {
+    background: rgba(37, 10, 113, 0.75) !important
+}

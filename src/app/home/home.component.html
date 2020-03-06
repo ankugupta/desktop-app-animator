@@ -1,0 +1,44 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <mat-card>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="thumb">
+                            <img src="../../assets/img/chubby.jpg">
+                        </div>
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="details">
+                            <h2>Chubby Cheeks</h2>
+                            <p>Prozo Publishing | School Books by Prozo</p>
+                            <p>Date added: 24/02/2020</p>
+                            <div class="downloading">
+                                <span>Downloading file, please wait...</span>
+                                <span class="greenColor">78% done...</span>
+                            </div>
+                            <mat-progress-bar [color]="color" [mode]="mode" [value]="value" [bufferValue]="bufferValue">
+                            </mat-progress-bar>
+                            <span>Size: 42 MB</span>
+                        </div>
+                        <div class="footerBtns">
+                            <span class="spacer"></span>
+                            <button mat-icon-button title="Play" (click)="playTokenDialog()">
+                                <mat-icon>play_circle_outline</mat-icon>
+                              </button>
+                            <button mat-icon-button title="Download">
+                                <mat-icon>cloud_download</mat-icon>
+                              </button>
+                            <button color="warn" mat-icon-button title="Delete">
+                                <mat-icon>delete</mat-icon>
+                              </button>
+                        </div>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+</div>
+<div class="noDisc displayNone">
+    <p>No discs are available to show in the library.<br> Please click the ADD NEW button to download a disc.</p>
+</div>
