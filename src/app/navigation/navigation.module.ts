@@ -11,6 +11,7 @@ import { CustomMaterialModule } from '../custom-material.module';
     CommonModule,
     NavigationRoutingModule,
     CustomMaterialModule
-  ]
+  ],
+  exports: [NavigationComponent]
 })
 export class NavigationModule { }

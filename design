@@ -1,0 +1,36 @@
+Backend:
+
+1) GET service to accept book key as param, responses:
+	key mapped to a book -> return book details
+	key invalid -> return error
+	
+2) GET service to accept app key as param, responses:
+	key mapped to an app -> return key details (valid until)
+	key invalid -> return error
+
+
+
+Frontend:
+
+Setup electron in angular project
+
+1) online/offline check 
+2) popup to enter book key -> get call -> handlers:
+	OK (extract book details -> save in local db -> add to list of books already displayed)
+	KO -> show msg to user in a popup
+	
+3) On start -> 
+	check if local db has app key
+		YES -> verify if time has expired
+			YES -> display msg of expired key (no normal function allowed)
+			NO -> load list of books from local db and display (normal function)
+		NO -> popup to enter app key -> get call -> handlers:
+				OK -> save app key in local DB with validUntil date -> load list of books from local db and display (normal function)
+				KO -> display msg of invalid key (no normal function allowed)
+				
+				
+4) User Action: GET Book -> download zip of book contents -> save it with a random name -> save local path to my-books in local db 
+	
+5) User Action: DELETE Book -> delete contents from local directory -> delete entry from my-books table
+
+6) User Action: PLAY Book -> full size popup pointed to index.html of the book's local content directory

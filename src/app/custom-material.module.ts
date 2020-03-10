@@ -26,6 +26,16 @@ import {
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+  ],
+  exports: [
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule
   ]
 })
 export class CustomMaterialModule { }

@@ -1,7 +1,7 @@
 <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
         <div class="logo">
-            <img src="../assets/img/logo.png">
+            <img src="assets/img/logo.png">
         </div>
         <app-navigation></app-navigation>
     </mat-sidenav>

@@ -18,12 +18,12 @@ import {
 import { NavigationComponent } from './navigation/navigation.component';
 import { DownloadTokenModule } from './download-token/download-token.module';
 import { PlayTokenModule } from './play-token/play-token.module';
+import { NavigationModule } from './navigation/navigation.module';
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    NavigationComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +39,8 @@ import { PlayTokenModule } from './play-token/play-token.module';
     MatFormFieldModule,
     MatInputModule,
     DownloadTokenModule,
-    PlayTokenModule
+    PlayTokenModule,
+    NavigationModule
 
   ],
   providers: [],
