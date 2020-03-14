@@ -8,7 +8,7 @@ Electron builder 22.4.0
 
 ## Development server
 
-Run `npm run electron:serve` for a dev server. The app will automatically reload if you change any of the source files.
+Run `npm run start` for a dev server. The app will automatically reload if you change any of the source files.
 
 ## Local Build
 
