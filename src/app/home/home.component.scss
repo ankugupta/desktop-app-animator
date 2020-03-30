@@ -15,16 +15,22 @@
     text-align: left;
     overflow: hidden;
     padding-bottom: 5px;
+    height: 240px;
     .thumb {
         overflow: hidden;
         height: 240px;
         margin: -16px -16px -16px;
+        float: left;
+        width: 15%;
+        margin-right: 2%;
         img {
             height: 100%;
             width: 100%;
         }
     }
     .details {
+        float: left;
+        width: 83%;
         h2 {
             font-size: 18px;
             margin: 0 0 3px;
@@ -64,6 +70,9 @@
     margin-top: 10px;
     .spacer {
         flex: 1 1 auto;
+    }
+    .greenBtn {
+        color: #07b72f;
     }
 }
 
