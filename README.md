@@ -1,4 +1,4 @@
-# DigiDisc
+# BookOnSteroids
 
 Electron based desktop app.
 
