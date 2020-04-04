@@ -1,0 +1,241 @@
+.red {
+    background-color: #ed1c24;
+}
+
+.green {
+    background-color: #00a651;
+}
+
+.purple {
+    background-color: #84357b;
+}
+
+.brown {
+    background-color: #995d36;
+}
+
+.pink {
+    background-color: #ed1690;
+}
+
+.yellow {
+    background-color: #fff200;
+}
+
+.grey {
+    background-color: #939598;
+}
+
+.blue {
+    background-color: #0073bd;
+}
+
+.black {
+    background-color: #000000;
+}
+
+.orange {
+    background-color: #ca6200;
+}
+
+.mainBox {
+    position: relative;
+    display: block;
+    float: left;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.mainBox img {
+    width: 80%;
+    margin-top: 30%;
+}
+
+canvas {
+    position: absolute;
+    z-index: 2;
+}
+
+form {
+    z-index: 3;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 1em;
+    color: white;
+    font-size: 13px;
+    font-family: arial;
+    top: 0px;
+    left: 0px;
+    width: 70%;
+    padding: 7px 10px;
+    border-radius: 5px;
+}
+
+form div {
+    width: 33%;
+    float: left;
+}
+
+form div label {
+    display: block;
+}
+
+canvas.sketchDefault {
+    min-height: 435px;
+}
+
+.a_img,
+.b_img,
+.c_img,
+.d_img,
+.e_img,
+.f_img,
+.g_img,
+.h_img,
+.i_img,
+.j_img,
+.k_img,
+.l_img,
+.m_img,
+.n_img,
+.o_img,
+.p_img,
+.q_img,
+.r_img,
+.s_img,
+.t_img,
+.u_img,
+.v_img,
+.w_img,
+.x_img,
+.y_img,
+.z_img,
+.z_1_img {
+    background-size: contain !important;
+    min-height: 350px;
+    position: absolute;
+    width: 84%;
+    top: 150px;
+    left: 0;
+    bottom: 0px;
+}
+
+.customCanvas {
+    top: 90px;
+    left: -70px;
+    z-index: 2;
+    width: 750px;
+}
+
+.a_img {
+    background: url(../images/alphabets/a.jpg) no-repeat center;
+    width: 74%;
+}
+
+.b_img {
+    background: url(../images/alphabets/b.jpg) no-repeat center;
+}
+
+.c_img {
+    background: url(../images/alphabets/c.jpg) no-repeat center;
+}
+
+.d_img {
+    background: url(../images/alphabets/d.jpg) no-repeat center;
+}
+
+.e_img {
+    background: url(../images/alphabets/e.jpg) no-repeat center;
+}
+
+.f_img {
+    background: url(../images/alphabets/f.jpg) no-repeat center;
+}
+
+.g_img {
+    background: url(../images/alphabets/g.jpg) no-repeat center;
+    width: 78%;
+}
+
+.h_img {
+    background: url(../images/alphabets/h.jpg) no-repeat center;
+}
+
+.i_img {
+    background: url(../images/alphabets/i.jpg) no-repeat center;
+}
+
+.j_img {
+    background: url(../images/alphabets/j.jpg) no-repeat center;
+}
+
+.k_img {
+    background: url(../images/alphabets/k.jpg) no-repeat center;
+}
+
+.l_img {
+    background: url(../images/alphabets/l.jpg) no-repeat center;
+}
+
+.m_img {
+    background: url(../images/alphabets/m.jpg) no-repeat center;
+}
+
+.n_img {
+    background: url(../images/alphabets/n.jpg) no-repeat center;
+}
+
+.o_img {
+    background: url(../images/alphabets/o.jpg) no-repeat center;
+}
+
+.p_img {
+    background: url(../images/alphabets/p.jpg) no-repeat center;
+}
+
+.q_img {
+    background: url(../images/alphabets/q.jpg) no-repeat center;
+}
+
+.r_img {
+    background: url(../images/alphabets/r.jpg) no-repeat center;
+}
+
+.s_img {
+    background: url(../images/alphabets/s.jpg) no-repeat center;
+}
+
+.t_img {
+    background: url(../images/alphabets/t.jpg) no-repeat center;
+}
+
+.u_img {
+    background: url(../images/alphabets/u.jpg) no-repeat center;
+    width: 90%;
+    height: 420px;
+    top: 102px;
+}
+
+.v_img {
+    background: url(../images/alphabets/v.jpg) no-repeat center;
+}
+
+.w_img {
+    background: url(../images/alphabets/w.jpg) no-repeat center;
+}
+
+.x_img {
+    background: url(../images/alphabets/x.jpg) no-repeat center;
+}
+
+.y_img {
+    background: url(../images/alphabets/y.jpg) no-repeat center;
+}
+
+.z_img {
+    background: url(../images/alphabets/z.jpg) no-repeat center;
+}
+
+.z_1_img {
+    background: url(../images/alphabets/z_1.jpg) no-repeat center;
+}
