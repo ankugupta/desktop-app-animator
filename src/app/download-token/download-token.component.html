@@ -1,10 +1,10 @@
 <div mat-dialog-content>
     <mat-form-field appearance="outline" color="warn">
-        <mat-label>Enter download token:</mat-label>
-        <input matInput placeholder="Token Number">
+        <mat-label>Download Token</mat-label>
+        <input matInput placeholder="Enter Token Number Printed On Your Book" [(ngModel)]="downloadToken" required>
     </mat-form-field>
 </div>
 <div mat-dialog-actions class="text-center">
-    <button mat-raised-button color="primary" class="btn">Download</button>
+    <button mat-raised-button color="primary" class="btn" [disabled]="!downloadToken" (click)="close(downloadToken)">Download</button>
     <button mat-raised-button (click)="close()">No Thanks</button>
 </div>

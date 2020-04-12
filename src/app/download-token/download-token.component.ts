@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 
-
 @Component({
   selector: 'app-download-token',
   templateUrl: './download-token.component.html',
@@ -9,12 +8,16 @@ import { MatDialogRef } from '@angular/material';
 })
 export class DownloadTokenComponent implements OnInit {
 
+  downloadToken: string;
+
   constructor(private dialogRef: MatDialogRef<DownloadTokenComponent>) { }
 
   ngOnInit() {
+    this.downloadToken = "";
   }
 
-  close() {
-    this.dialogRef.close();
+
+  close(data?: string) {
+    this.dialogRef.close(data);
   }
 }

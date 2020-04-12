@@ -34,3 +34,22 @@ Setup electron in angular project
 5) User Action: DELETE Book -> delete contents from local directory -> delete entry from my-books table
 
 6) User Action: PLAY Book -> full size popup pointed to index.html of the book's local content directory
+
+
+list book
+	read from DB
+add book 
+	add to list and DB
+	download image - update local url in list and DB
+	book already downloaded - show msg
+	on failure to find book - show invalid token OR offline OR generic error message
+download content
+	unzip content - delete zip file - update local url in list and DB
+delete book
+	confirmation
+		delete content from disk
+		delete image from disk
+		delete entry from DB
+		delete from list
+play content
+	open local content url in modal

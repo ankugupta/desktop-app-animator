@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import {MatDialog} from '@angular/material/dialog';
-import { DownloadTokenComponent } from './download-token/download-token.component';
 
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+
+import { DownloadTokenComponent } from './download-token/download-token.component';
 
 @Component({
   selector: 'app-root',
@@ -13,18 +14,14 @@ import { DownloadTokenComponent } from './download-token/download-token.componen
 })
 export class AppComponent {
 
-  title = 'DigiDisc';
+  title = 'DigiBook';
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-  .pipe(
-    map(result => result.matches),
-    shareReplay()
-  );
+    .pipe(
+      map(result => result.matches),
+      shareReplay()
+    );
 
-  constructor(private breakpointObserver: BreakpointObserver, public dialog: MatDialog) {}
+  constructor(private breakpointObserver: BreakpointObserver, public dialog: MatDialog) { }
 
-  downloadTokenDialog(): void {
-    const dialogRef = this.dialog.open(DownloadTokenComponent, {
-      width: '600px'
-    });
-  }
+
 }

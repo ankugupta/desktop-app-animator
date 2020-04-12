@@ -1,4 +1,4 @@
-# BookOnSteroids
+# DigiBook
 
 Electron based desktop app.
 

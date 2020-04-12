@@ -1,0 +1,8 @@
+# Customized webpack build configuration
+- Because JavaScript can be written for both server and browser, webpack offers multiple deployment targets that you can set in your webpack configuration. Default target is 'web'.
+- Since this project is executed by electron, two possible targets are electron-main and electron-renderer. 
+- Given that the webpack is building angular-side code that will be executed by electron-renderer process, the build process (ng build, ng serve) have been customized to target electron-renderer.
+- Dependency for customized builder:         "@angular-builders/custom-webpack": "^8.2.0",
+- Files modified:                             angular.json (replaced default builder and set customWebpackConfig property)
+- Custom config file:                         angular.webpack.js
+- Reference: https://webpack.js.org/concepts/targets/

@@ -1,22 +1,18 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
+import { CustomMaterialModule } from '../custom-material.module';
 import { DownloadTokenRoutingModule } from './download-token-routing.module';
 import { DownloadTokenComponent } from './download-token.component';
-import { MatFormFieldModule, MatInputModule, MatButtonModule } from '@angular/material';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 
 @NgModule({
   declarations: [DownloadTokenComponent],
   imports: [
     CommonModule,
     DownloadTokenRoutingModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
+    CustomMaterialModule,
     FormsModule,
-    ReactiveFormsModule,
   ]
 })
 export class DownloadTokenModule { }

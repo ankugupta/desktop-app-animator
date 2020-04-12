@@ -1,5 +1,5 @@
 {
-  "appId": "com.puranik.desktop.book.animator",
+  "appId": "com.prozo.desktop.book.animator",
   "productName": "Prozo",
   "directories": {
     "output": "release/"
@@ -23,19 +23,19 @@
     "!**/{angular.json, tsconfig.spec.json, tslint.json, tsconfig-serve.json, tsconfig.app.json, tsconfig.json}"
   ],
   "win": {
-    "icon": "dist/DigiDisc",
+    "icon": "dist/DigiBook",
     "target": [
       "nsis"
     ]
   },
   "mac": {
-    "icon": "dist/DigiDisc",
+    "icon": "dist/DigiBook",
     "target": [
       "dmg"
     ]
   },
   "linux": {
-    "icon": "dist/DigiDisc",
+    "icon": "dist/DigiBook",
     "target": [
       "AppImage"
     ]
