@@ -1,15 +1,16 @@
 import { Subscription } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
 
-import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { DownloadTokenComponent } from '../download-token/download-token.component';
+import { ApiError } from '../model/api-error.model';
 import { Book } from '../model/book.model';
 import { BookService } from '../service/book.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { ApiError } from '../model/api-error.model';
+import { CommonUtilService } from '../service/common-util.service';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +29,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   readonly NO_BOOKS_MSG = "No books are available in the library.<br> Please click the ADD NEW button to download a book.";
 
-  constructor(public dialog: MatDialog, private bookService: BookService, private changeDetectorRef: ChangeDetectorRef) { }
+  constructor(
+    public dialog: MatDialog, 
+    private bookService: BookService, 
+    private commonUtils: CommonUtilService, 
+    private changeDetectorRef: ChangeDetectorRef
+    ){ }
 
   ngOnInit() {
     //load existing books data from db
@@ -57,14 +63,14 @@ export class HomeComponent implements OnInit, OnDestroy {
               currentBook.downloadInProgress = false;
               //unzip content
               const unzipToPath = downloadedItem.savedAt.substring(0, downloadedItem.savedAt.lastIndexOf('.'));
-              this.bookService.unzipContent(downloadedItem.savedAt, unzipToPath).then(
+              this.commonUtils.unzipContent(downloadedItem.savedAt, unzipToPath).then(
                 () => {
                   //delete zip file
-                  this.bookService.deleteFileDirAtPath(downloadedItem.savedAt).then(() => {
+                  this.commonUtils.deleteFileDirAtPath(downloadedItem.savedAt).then(() => {
                     console.log(`deleted zip at ${downloadedItem.savedAt}`);
                   });
                   //set url in list
-                  currentBook.contentLocalUrl = this.bookService.formatUrl(this.bookService.joinPaths(downloadedItem.savedAt.substring(0, downloadedItem.savedAt.lastIndexOf('.')), 'index.html'));
+                  currentBook.contentLocalUrl = this.commonUtils.formatUrl(this.commonUtils.joinPaths(downloadedItem.savedAt.substring(0, downloadedItem.savedAt.lastIndexOf('.')), 'index.html'));
                   //update in db
                   this.bookService.updateBookContentLocalUrl(currentBook).then(() => {
                     console.log(`content detail updated in DB for book : ${currentBook.title}`);
@@ -80,8 +86,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
             }, 500);
             this.changeDetectorRef.detectChanges();
-
-            //TODO: update content url for book in DB
           }
           else {
             //if content download cancelled
@@ -98,7 +102,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           currentBook = this.imageUrlToBookMap.get(downloadedItem.srcUrl);
           if (currentBook) {
             if (downloadedItem.state == 'completed') {
-              currentBook.imageLocalUrl = this.bookService.formatUrl(downloadedItem.savedAt);
+              currentBook.imageLocalUrl = this.commonUtils.formatUrl(downloadedItem.savedAt);
               console.log(`book image save at: ${currentBook.imageLocalUrl}`);
               //update image url for book in DB
               this.bookService.updateBookImageLocalUrl(currentBook).then(() => {
@@ -224,7 +228,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     //invoke service method for book content play
     //this.bookService.playBookContents("fake");
 
-    if (this.bookService.isFileExists(book.contentLocalUrl)) {
+    if (this.commonUtils.isFileExists(book.contentLocalUrl)) {
       console.log(`content found locally..opening`);
       this.bookService.playBookContents(book.contentLocalUrl);
     }

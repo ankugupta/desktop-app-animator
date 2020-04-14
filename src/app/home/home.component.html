@@ -1,5 +1,7 @@
 <div>
-    <button mat-raised-button color="primary" class="btn" (click)="displayDownloadTokenDialog()"> <mat-icon>add_circle</mat-icon> ADD NEW</button>
+    <button mat-raised-button color="primary" class="btn" (click)="displayDownloadTokenDialog()">
+        <mat-icon>add_circle</mat-icon> ADD NEW
+    </button>
 </div>
 <br>
 <div class="container-fluid">
@@ -12,14 +14,15 @@
                     </div>
 
                     <div class="details">
-                        <h2>{{ book.title }}</h2>
+                        <h2>{{ book.schoolClass }} - {{ book.title  }}</h2>
                         <p>Prozo Publishing | School Books by Prozo</p>
                         <p>Date added: {{ book.dateAdded | date }}</p>
                         <div class="downloading" *ngIf="book.downloadInProgress">
                             <span>Downloading file, please wait...</span>
                             <span class="greenColor">{{book.downloadProgress}}% done...</span>
                         </div>
-                        <mat-progress-bar *ngIf="book.downloadInProgress" mode="determinate" [value]="book.downloadProgress" color="warn">
+                        <mat-progress-bar *ngIf="book.downloadInProgress" mode="determinate"
+                            [value]="book.downloadProgress" color="warn">
                         </mat-progress-bar>
                         <div class="footerBtns">
                             <span class="spacer"></span>
@@ -27,14 +30,11 @@
                                 *ngIf="book.contentLocalUrl">
                                 <mat-icon>play_circle_outline</mat-icon>
                             </button>
-                            <!-- <a class="greenBtn" mat-icon-button title="Play" href="assets/Prozo_Level_A_ Alphabets/index.html" target="_blank" rel="noopener">
-                                <mat-icon>play_circle_outline</mat-icon>
-                            </a> -->
                             <button mat-icon-button title="Download" (click)="downloadBookContent(book)"
                                 *ngIf="!book.contentLocalUrl" [disabled]="book.downloadInProgress">
                                 <mat-icon>cloud_download</mat-icon>
                             </button>
-                            <button color="warn" mat-icon-button title="Delete"
+                            <button color="warn" mat-icon-button title="Delete" [disabled]="book.downloadInProgress"
                                 (click)="confirmAndDeleteBookContent(book, idx)">
                                 <mat-icon>delete</mat-icon>
                             </button>

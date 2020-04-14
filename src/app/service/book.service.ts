@@ -11,6 +11,7 @@ import * as Constants from '../app.constants';
 import { Book } from '../model/book.model';
 import { DataService } from './data.service';
 import { SqlStorageService } from './sql-storage.service';
+import { CommonUtilService } from './common-util.service';
 
 //const electron = (<any>window).require('electron');
 const win = (<any>window);
@@ -32,7 +33,7 @@ export class BookService {
     return !!(win && win.process && win.process.type);
   }
 
-  constructor(private data: DataService, private sqlStorage: SqlStorageService) {
+  constructor(private data: DataService, private sqlStorage: SqlStorageService, private commonUtils: CommonUtilService) {
     // Conditional imports
     if (this.isElectron) {
       this.ipcRenderer = win.require('electron').ipcRenderer;
@@ -108,9 +109,9 @@ export class BookService {
   public deleteBookContents(book: Book): Promise<void> {
     //delete book contents from filesystem, if downloaded
     if (book.contentLocalUrl) {
-      const dirPath: string = this.getPathDirname(book.contentLocalUrl);
+      const dirPath: string = this.commonUtils.getPathDirname(book.contentLocalUrl);
 
-      this.deleteFileDirAtPath(dirPath).then(
+      this.commonUtils.deleteFileDirAtPath(dirPath).then(
         () => {
           console.log(`deleted path successfully: ${dirPath}`);
         },
@@ -123,7 +124,7 @@ export class BookService {
     if (book.imageLocalUrl) {
       const imgPath: string = book.imageLocalUrl;
 
-      this.deleteFileDirAtPath(imgPath).then(
+      this.commonUtils.deleteFileDirAtPath(imgPath).then(
         () => {
           console.log(`deleted path successfully: ${imgPath}`);
         },
@@ -154,63 +155,6 @@ export class BookService {
     this.ipcRenderer.send("open-modal", url);
   }
 
-  //node api - fs
-  public isFileExists(url: string) {
-    if (url.startsWith('file:///')) {
-      url = url.substring('file:///'.length);
-    }
-    return this.fs.existsSync(url);
-  }
-
-  public getPathDirname(path: string): string {
-    //path.dirname('/foo/bar/baz/asdf/quux');
-    // Returns: '/foo/bar/baz/asdf'
-
-    return this.path.dirname(path);
-  }
-
-  public joinPaths(...paths: string[]): string {
-    return this.path.join(...paths);
-  }
-  public unzipContent(srcPath: string, destPath: string): Promise<void> {
-
-    return ipcRenderer.invoke('unzip-file', srcPath, destPath).then(
-      (result: UnzipContentResult) => {
-        if (result.status == 'success') {
-          return;
-        }
-        else {
-          throw result.err;
-        }
-      }
-    );
-  }
-
-
-  //node api in main - del
-  public deleteFileDirAtPath(path: string): Promise<void> {
-    console.log(`deleting file/directory at: ${path}`);
-
-    return ipcRenderer.invoke('delete-file', path).then(
-      (result) => {
-        if (result.status == 'success') {
-          return;
-        }
-        else {
-          throw result.err;
-        }
-      }
-    );
-  }
-
-  //node api - url
-  public formatUrl(path: string): string {
-    return this.urlLib.format({
-      pathname: path,
-      protocol: 'file:',
-      slashes: true
-    });
-  }
 }
 
 export interface DownloadProgress {

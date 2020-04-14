@@ -15,7 +15,8 @@ Menu.setApplicationMenu(null);
 
 // check if serve-ing from localhost
 const args = process.argv.slice(1),
-  serve = args.some(val => val === '--serve');
+  serve = args.some(val => val === '--serve'),
+  dev = args.some(val => val === '--dev');
 
 
 function createWindow(): BrowserWindow {
@@ -51,10 +52,9 @@ function createWindow(): BrowserWindow {
     }));
   }
 
-  //TODO: disable dev tools for prod
-  //if (serve) {
-  win.webContents.openDevTools();
-  //}
+  if (serve || dev) {
+    win.webContents.openDevTools();
+  }
 
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -285,9 +285,8 @@ app.on('session-created', session => {
 //downloader code -- ends
 
 
-//TODO: update download directory
-const downloadOptions = {
-  //directory: path.join(__dirname, 'content-lib/DigiBook/index.html'),
+const downloadOptions: DownloadOptions = {
+  directory: path.join(app.getPath("userData"), "MyContent"),
   errorMessage: "Download could not be completed. Please try again later."
 }
 
@@ -310,16 +309,10 @@ ipcMain.on('open-modal', (event, targetUrl) => {
       parent: win,
       modal: true,
       show: false,
-      resizable: false,
-      alwaysOnTop: true
+      resizable: false
     });
     modalWindow.maximize();
-    modalWindow.loadURL("https://book-animator.s3.ap-south-1.amazonaws.com/prod-desktop/publishers/dummypub/books/DP_ALPHABETS/Prozo_Level_A_Alphabets/index.html");
-    // modalWindow.loadURL(url.format({
-    //   pathname: path.join(__dirname, 'dist/DigiBook/assets/Prozo_Level_A_ Alphabets/index.html'),
-    //   protocol: 'file:',
-    //   slashes: true
-    // }));
+    modalWindow.loadURL(targetUrl);
 
     modalWindow.once('ready-to-show', () => {
       modalWindow.show();

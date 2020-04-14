@@ -4,6 +4,7 @@ import * as nedb from 'nedb';
 import { Injectable } from '@angular/core';
 
 import { Book } from '../model/book.model';
+import { CommonUtilService } from './common-util.service';
 
 const win = (<any>window);
 
@@ -18,7 +19,7 @@ export class SqlStorageService {
   appDB: {
     books: nedb
   };
-  constructor() {
+  constructor(private commonUtils: CommonUtilService) {
     if (this.isElectron) {
       this.app = win.require('electron').remote.app;
       this.nedb = win.require('nedb');
@@ -29,8 +30,9 @@ export class SqlStorageService {
   }
 
   initDB() {
-    console.log(`Setting up DB...`);
-    const dbFilePath = `${this.app.getPath("downloads")}/data`;
+    const dbFilePath = this.commonUtils.joinPaths(this.app.getPath("userData"), "data");
+    console.log(`Setting up DB at ${dbFilePath}`);
+
     //instantiate each collection's object
     this.appDB = {
       books: new this.nedb({
@@ -40,6 +42,9 @@ export class SqlStorageService {
           if (error) {
             console.error(`DB could not be loaded, error:`);
             console.dir(error);
+          }
+          else{
+            console.log(`DB loaded succesfully`);
           }
         }
       })

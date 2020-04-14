@@ -7,6 +7,7 @@
   "files": [
     "**/*",
     "!**/*.ts",
+    "!**/*.js.map",
     "!*.code-workspace",
     "!LICENSE.md",
     "!README.md",
@@ -18,9 +19,9 @@
     "!angular.json",
     "!_config.yml",
     "!karma.conf.js",
-    "!design",
+    "!dev-notes/",
     "!browserslist",
-    "!**/{angular.json, tsconfig.spec.json, tslint.json, tsconfig-serve.json, tsconfig.app.json, tsconfig.json}"
+    "!**/{angular.json, angular.webpack.js, tsconfig.spec.json, tslint.json, tsconfig-serve.json, tsconfig.app.json, tsconfig.json}"
   ],
   "win": {
     "icon": "dist/DigiBook",
