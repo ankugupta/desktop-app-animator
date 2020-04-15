@@ -30,11 +30,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   readonly NO_BOOKS_MSG = "No books are available in the library.<br> Please click the ADD NEW button to download a book.";
 
   constructor(
-    public dialog: MatDialog, 
-    private bookService: BookService, 
-    private commonUtils: CommonUtilService, 
+    public dialog: MatDialog,
+    private bookService: BookService,
+    private commonUtils: CommonUtilService,
     private changeDetectorRef: ChangeDetectorRef
-    ){ }
+  ) { }
 
   ngOnInit() {
     //load existing books data from db
@@ -139,6 +139,9 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.noBooksMessage = null;
         }
 
+        //sort
+        this.sortBooksDisplayed();
+
         this.mybooks.forEach(mybook => {
           if (!mybook.imageLocalUrl) {
             //download book image again - previous download may have failed
@@ -164,9 +167,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     //if user has entered token
     if (token) {
-      if (this.accessKeyToBookMap.get(token)) {
+      let existingBook: Book = this.accessKeyToBookMap.get(token);
+      if (existingBook) {
         //book already downloaded
-        this.displayMsgInPopup(`You already have the book with token ${token}`);
+        this.displayMsgInPopup(`You already have the book with token <i>${token}</i><br>Book title: ${existingBook.schoolClass} - ${existingBook.title}`);
         return;
       }
       //call service to fetch book details 
@@ -180,6 +184,9 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.accessKeyToBookMap.set(book.accessKey, book);
           this.noBooksMessage = null;
 
+          //sort
+          this.sortBooksDisplayed();
+          
           //save book info in DB
           this.bookService.saveBookDetails(book).then(() => {
             console.log(`book saved successfully: ${book.title}`);
@@ -211,6 +218,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     return false;
+  }
+
+  //sorts in descending order - latest book displayed first
+  sortBooksDisplayed(){
+    this.mybooks.sort((b1: Book, b2: Book) => {
+      return b2.dateAdded.getTime() - b1.dateAdded.getTime();
+    })
   }
 
   displayMsgInPopup(msg: string): MatDialogRef<ConfirmationDialogComponent> {

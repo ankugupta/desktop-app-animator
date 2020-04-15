@@ -19,6 +19,27 @@ const args = process.argv.slice(1),
   dev = args.some(val => val === '--dev');
 
 
+
+/**
+ * handle second-instance open action by user - simply restore and focus the already opened app window
+ */
+const isFirstInstance = app.requestSingleInstanceLock();
+
+if (!isFirstInstance) {
+  app.quit();
+}
+
+app.on('second-instance', function (e, argv, workingDir) {
+  if (win) {
+    if (win.isMinimized()) {
+      win.restore();
+    }
+    win.focus();
+    
+  }
+});
+
+
 function createWindow(): BrowserWindow {
 
   const electronScreen = screen;

@@ -21,7 +21,7 @@
     "!karma.conf.js",
     "!dev-notes/",
     "!browserslist",
-    "!**/{angular.json, angular.webpack.js, tsconfig.spec.json, tslint.json, tsconfig-serve.json, tsconfig.app.json, tsconfig.json}"
+    "!**/{angular.json,angular.webpack.js,tsconfig.spec.json,tslint.json,tsconfig-serve.json,tsconfig.app.json,tsconfig.json}"
   ],
   "win": {
     "icon": "dist/DigiBook",
