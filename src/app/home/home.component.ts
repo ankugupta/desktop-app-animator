@@ -70,7 +70,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                     console.log(`deleted zip at ${downloadedItem.savedAt}`);
                   });
                   //set url in list
-                  currentBook.contentLocalUrl = this.commonUtils.formatUrl(this.commonUtils.joinPaths(downloadedItem.savedAt.substring(0, downloadedItem.savedAt.lastIndexOf('.')), 'index.html'));
+                  currentBook.contentLocalUrl = this.commonUtils.joinPaths(downloadedItem.savedAt.substring(0, downloadedItem.savedAt.lastIndexOf('.')), 'index.html');
                   //update in db
                   this.bookService.updateBookContentLocalUrl(currentBook).then(() => {
                     console.log(`content detail updated in DB for book : ${currentBook.title}`);
@@ -102,7 +102,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           currentBook = this.imageUrlToBookMap.get(downloadedItem.srcUrl);
           if (currentBook) {
             if (downloadedItem.state == 'completed') {
-              currentBook.imageLocalUrl = this.commonUtils.formatUrl(downloadedItem.savedAt);
+              currentBook.imageLocalUrl = downloadedItem.savedAt;
               console.log(`book image save at: ${currentBook.imageLocalUrl}`);
               //update image url for book in DB
               this.bookService.updateBookImageLocalUrl(currentBook).then(() => {
@@ -240,11 +240,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   playBookContent(book: Book, index: number) {
     //invoke service method for book content play
-    //this.bookService.playBookContents("fake");
 
     if (this.commonUtils.isFileExists(book.contentLocalUrl)) {
       console.log(`content found locally..opening`);
-      this.bookService.playBookContents(book.contentLocalUrl);
+      this.bookService.playBookContents(this.commonUtils.formatUrl(book.contentLocalUrl));
     }
     else {
       let confirmDialog = this.dialog.open(ConfirmationDialogComponent, {
@@ -313,7 +312,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   getImageUrl(book: Book): string {
     if (book.imageLocalUrl) {
       //console.log("book's local image used from " + book.imageLocalUrl);
-      return book.imageLocalUrl;
+      return this.commonUtils.formatUrl(book.imageLocalUrl);
     }
 
     //console.log("book's online image used from " + book.imageUrl);

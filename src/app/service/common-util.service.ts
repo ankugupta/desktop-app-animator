@@ -37,6 +37,9 @@ export class CommonUtilService {
     if (url.startsWith('file:///')) {
       url = url.substring('file:///'.length);
     }
+    if(url.indexOf('%') > -1){
+      url = decodeURI(url);
+    }
     return this.fs.existsSync(url);
   }
 

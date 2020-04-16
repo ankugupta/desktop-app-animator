@@ -381,7 +381,12 @@ ipcMain.handle('delete-file', async (event, pathToDelete: string) => {
   else {
     try {
       if (pathToDelete.startsWith('file:///')) {
+        if(process.platform === 'darwin'){
+          pathToDelete = pathToDelete.substring('file://'.length);
+        }
+        else{
         pathToDelete = pathToDelete.substring('file:///'.length);
+        }
       }
       pathToDelete = pathToDelete.split("\\").join("/");
       console.log(`main: deleting file/dir at path : ${pathToDelete}`);
