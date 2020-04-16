@@ -19,7 +19,6 @@ p {
     height: 100%;
     .mainContainer {
         padding: 30px 10px;
-        height: 100%;
     }
     .sidenav {
         width: 120px;
@@ -76,13 +75,13 @@ h2 {
 }
 
 .btn {
-    background: #d34d4a !important;
+    background: #78438b !important;
     outline: none;
 }
 
 .btn:hover {
-    background: #b83f3d !important;
-    color: #fff !important;
+    background: #78438b !important;
+    color: #fff;
 }
 
 .mat-form-field {
@@ -99,4 +98,22 @@ button:focus {
 
 .cdk-overlay-dark-backdrop {
     background: rgba(37, 10, 113, 0.75) !important
+}
+
+.mat-dialog-actions {
+    display: flex;
+    justify-content: center;
+    margin: -10px 0 !important;
+}
+
+app-confirmation-dialog {
+    width: 300px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 200;
+    .mat-dialog-actions {
+        display: flex;
+        justify-content: center;
+        margin: 10px 0 0 !important;
+    }
 }

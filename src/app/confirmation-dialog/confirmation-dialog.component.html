@@ -1,7 +1,7 @@
 <div mat-dialog-content>
     <div [innerHTML]="message"></div>
 </div>
-<div mat-dialog-actions class="text-center">
-    <button mat-raised-button color="primary" class="btn" *ngIf="okButtonText" (click)="close(okButtonText)">{{ okButtonText }}</button>
+<div mat-dialog-actions>
+    <button mat-raised-button color="warn" *ngIf="okButtonText" (click)="close(okButtonText)">{{ okButtonText }}</button>
     <button mat-raised-button *ngIf="cancelButtonText" (click)="close(cancelButtonText)">{{ cancelButtonText }}</button>
 </div>

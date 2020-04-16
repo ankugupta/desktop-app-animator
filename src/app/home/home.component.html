@@ -1,9 +1,9 @@
-<div>
+<div class="addBookBtn">
     <button mat-raised-button color="primary" class="btn" (click)="displayDownloadTokenDialog()">
-        <mat-icon>add_circle</mat-icon> ADD NEW
+        <mat-icon>add_circle</mat-icon> ADD NEW BOOK
     </button>
 </div>
-<br>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
@@ -12,36 +12,29 @@
                     <div class="thumb">
                         <img [src]="getImageUrl(book)" [alt]="book.title">
                     </div>
-
                     <div class="details">
-                        <h2>{{ book.schoolClass }} - {{ book.title  }}</h2>
+                        <h2>{{ book.schoolClass }} - {{ book.title }}</h2>
                         <p>Prozo Publishing | School Books by Prozo</p>
                         <p>Date added: {{ book.dateAdded | date }}</p>
                         <div class="downloading" *ngIf="book.downloadInProgress">
                             <span>Downloading file, please wait...</span>
                             <span class="greenColor">{{book.downloadProgress}}% done...</span>
                         </div>
-                        <mat-progress-bar *ngIf="book.downloadInProgress" mode="determinate"
-                            [value]="book.downloadProgress" color="warn">
+                        <mat-progress-bar *ngIf="book.downloadInProgress" mode="determinate" [value]="book.downloadProgress" color="warn">
                         </mat-progress-bar>
                         <div class="footerBtns">
                             <span class="spacer"></span>
-                            <button mat-icon-button title="Play" (click)="playBookContent(book, idx)"
-                                *ngIf="book.contentLocalUrl">
-                                <mat-icon>play_circle_outline</mat-icon>
+                            <button class="greenBtn" mat-raised-button title="Play" (click)="playBookContent(book, idx)" *ngIf="book.contentLocalUrl">
+                                <mat-icon>play_circle_outline</mat-icon> Play
                             </button>
-                            <button mat-icon-button title="Download" (click)="downloadBookContent(book)"
-                                *ngIf="!book.contentLocalUrl" [disabled]="book.downloadInProgress">
-                                <mat-icon>cloud_download</mat-icon>
+                            <button class="blueBtn" mat-raised-button (click)="downloadBookContent(book)" *ngIf="!book.contentLocalUrl" [disabled]="book.downloadInProgress">
+                                <mat-icon>cloud_download</mat-icon> Download
                             </button>
-                            <button color="warn" mat-icon-button title="Delete" [disabled]="book.downloadInProgress"
-                                (click)="confirmAndDeleteBookContent(book, idx)">
-                                <mat-icon>delete</mat-icon>
+                            <button mat-raised-button color="warn" title="Delete" [disabled]="book.downloadInProgress" (click)="confirmAndDeleteBookContent(book, idx)">
+                                <mat-icon>delete</mat-icon> Delete
                             </button>
                         </div>
                     </div>
-
-
                 </div>
             </mat-card>
         </div>

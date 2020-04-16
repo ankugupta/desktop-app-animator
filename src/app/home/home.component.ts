@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   downProgressSubscription: Subscription;
   downCompleteSubscription: Subscription;
 
-  readonly NO_BOOKS_MSG = "No books are available in the library.<br> Please click the ADD NEW button to download a book.";
+  readonly NO_BOOKS_MSG = "No books are available in the library.<br> Please click the ADD NEW BOOK button to download a book.";
 
   constructor(
     public dialog: MatDialog,
@@ -229,7 +229,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   displayMsgInPopup(msg: string): MatDialogRef<ConfirmationDialogComponent> {
     return this.dialog.open(ConfirmationDialogComponent, {
-      width: '600px',
+      width: '400px',
       disableClose: true,
       data: {
         msg: msg,
@@ -247,7 +247,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     else {
       let confirmDialog = this.dialog.open(ConfirmationDialogComponent, {
-        width: '600px',
+        width: '400px',
         disableClose: true,
         data: {
           msg: "Could not launch - your downloaded content may have been deleted. Would you like to delete this book?",
@@ -276,7 +276,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   confirmAndDeleteBookContent(book: Book, index: number) {
 
     let confirmDialog = this.dialog.open(ConfirmationDialogComponent, {
-      width: '600px',
+      width: '400px',
       disableClose: true,
       data: {
         msg: "Are you sure you want to delete this book?",

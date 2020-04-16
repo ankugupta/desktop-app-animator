@@ -15,10 +15,10 @@
     text-align: left;
     overflow: hidden;
     padding-bottom: 5px;
-    height: 240px;
+    height: 220px;
     .thumb {
         overflow: hidden;
-        height: 240px;
+        height: 220px;
         margin: -16px -16px -16px;
         float: left;
         width: 15%;
@@ -31,6 +31,7 @@
     .details {
         float: left;
         width: 83%;
+        position: relative;
         h2 {
             font-size: 18px;
             margin: 0 0 3px;
@@ -65,17 +66,45 @@
 
 .footerBtns {
     display: flex;
-    padding: 5px 0 0;
+    padding: 15px 0 0;
     border-top: 1px solid #e4e4e4;
     margin-top: 10px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     .spacer {
         flex: 1 1 auto;
     }
     .greenBtn {
-        color: #07b72f;
+        background: #07b72f;
+        color: #fff;
+        margin: 0 10px;
+    }
+    .blueBtn {
+        background: #70d1f1;
+        color: #fff;
+        margin: 0 10px;
     }
 }
 
 mat-progress-bar {
     margin: 15px 0 5px;
+}
+
+.addBookBtn {
+    position: fixed;
+    background: #f9f9f9;
+    width: 92%;
+    padding: 30px 0;
+    margin: -30px -10px 0;
+    z-index: 1;
+    text-align: center;
+    box-shadow: inset 0 9px 12px 0 #efefef;
+    button {
+        padding: 7px 50px;
+    }
+}
+
+.container-fluid {
+    margin-top: 90px;
 }
