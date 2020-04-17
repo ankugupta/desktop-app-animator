@@ -26,7 +26,8 @@ export class BookService {
   path: typeof path;
   bookAccessKeyToDetailsMap: Map<string, Book> = new Map();
 
-  booksWithDownloadInProgress: string[] = [];
+  booksDownloadQueue: string[] = [];
+  booksDownloadedList: DownloadedItem[] = [];
 
   downloadeCompletionSubject: Subject<DownloadedItem> = new Subject();
   downloadProgressSubject: Subject<DownloadProgress> = new Subject();
@@ -53,8 +54,46 @@ export class BookService {
   //feed values to subject
   private subscribeElectronDownloadCompletions() {
     this.ipcRenderer.on("download-finished", (event, item: DownloadedItem) => {
+      if (this.booksDownloadQueue.indexOf(item.srcUrl) > -1) {
+        this.removeFromDownloadQueue(item.srcUrl);
+      }
+      if (item.state == "completed") {
+        this.booksDownloadedList.push(item);
+      }
       this.downloadeCompletionSubject.next(item);
     });
+  }
+
+  public removeFromDownloadQueue(contentUrl: string) {
+    let idx = this.booksDownloadQueue.indexOf(contentUrl);
+    if (idx > -1) {
+      this.booksDownloadQueue.splice(idx, 1);
+    }
+  }
+
+  public addToDownloadQueue(contentUrl: string) {
+    this.booksDownloadQueue.push(contentUrl);
+  }
+
+  public getBooksInDownloadQueue(): string[] {
+    return this.booksDownloadQueue;
+  }
+
+  public removeFromDownloadedBooks(contentUrl: string) {
+    let idx: number = -1;
+    for (let i = 0; i < this.booksDownloadedList.length; i++) {
+      if (this.booksDownloadedList[i].srcUrl == contentUrl) {
+        idx = i;
+        break;
+      }
+    }
+    if (idx > -1) {
+      this.booksDownloadedList.splice(idx, 1);
+    }
+  }
+
+  public getDownloadedBooks(): DownloadedItem[] {
+    return this.booksDownloadedList;
   }
 
   //subscribe to channel on which download update events are published
@@ -155,21 +194,6 @@ export class BookService {
   public playBookContents(url: string): void {
     console.log(`Renderer : play book contents from ${url}`);
     this.ipcRenderer.send("open-modal", url);
-  }
-
-  public removeFromDownloadQueue(accessKey: string) {
-    let idx = this.booksWithDownloadInProgress.indexOf(accessKey);
-    if (idx > -1) {
-      this.booksWithDownloadInProgress.splice(idx, 1);
-    }
-  }
-
-  public addToDownloadQueue(accessKey: string) {
-    this.booksWithDownloadInProgress.push(accessKey);
-  }
-
-  public getBooksInDownloadQueue(): string[] {
-    return this.booksWithDownloadInProgress;
   }
 
 }

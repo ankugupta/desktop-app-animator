@@ -9,7 +9,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { DownloadTokenComponent } from '../download-token/download-token.component';
 import { ApiError } from '../model/api-error.model';
 import { Book } from '../model/book.model';
-import { BookService } from '../service/book.service';
+import { BookService, DownloadedItem } from '../service/book.service';
 import { CommonUtilService } from '../service/common-util.service';
 
 @Component({
@@ -49,15 +49,14 @@ export class HomeComponent implements OnInit, OnDestroy {
           currentBook.downloadInProgress = true;
           this.changeDetectorRef.detectChanges();
         }
-        else if(currentBook && downloadProgress.state == "interrupted"){
+        else if (currentBook && downloadProgress.state == "interrupted") {
           //if content download cancelled
           currentBook.downloadInProgress = false;
           currentBook.downloadProgress = 0;
-          this.bookService.removeFromDownloadQueue(currentBook.accessKey);
+          this.bookService.removeFromDownloadQueue(currentBook.contentUrl);
 
-          if (downloadProgress.state == 'interrupted') {
-            this.displayMsgInPopup('Content could not be downloaded, please make sure you are connected to the internet.');
-          }
+          this.displayMsgInPopup('Content could not be downloaded, please make sure you are connected to the internet.');
+
         }
       }
     );
@@ -72,29 +71,8 @@ export class HomeComponent implements OnInit, OnDestroy {
             currentBook.downloadProgress = 100;
             setTimeout(() => {
               currentBook.downloadInProgress = false;
-              this.bookService.removeFromDownloadQueue(currentBook.accessKey);
-              //unzip content
-              const unzipToPath = downloadedItem.savedAt.substring(0, downloadedItem.savedAt.lastIndexOf('.'));
-              this.commonUtils.unzipContent(downloadedItem.savedAt, unzipToPath).then(
-                () => {
-                  //delete zip file
-                  this.commonUtils.deleteFileDirAtPath(downloadedItem.savedAt).then(() => {
-                    console.log(`deleted zip at ${downloadedItem.savedAt}`);
-                  });
-                  //set url in list
-                  currentBook.contentLocalUrl = this.commonUtils.joinPaths(downloadedItem.savedAt.substring(0, downloadedItem.savedAt.lastIndexOf('.')), 'index.html');
-                  //update in db
-                  this.bookService.updateBookContentLocalUrl(currentBook).then(() => {
-                    console.log(`content detail updated in DB for book : ${currentBook.title}`);
-                  })
-                  this.changeDetectorRef.detectChanges();
-                },
-                (err) => {
-                  console.error(`Could not unzip ${downloadedItem.savedAt}, error:`);
-                  console.dir(err);
-                  this.displayMsgInPopup('Content could not be processed, please try again later');
-                }
-              )
+
+              this.processContentDownload(downloadedItem, currentBook);
 
             }, 500);
             this.changeDetectorRef.detectChanges();
@@ -103,7 +81,6 @@ export class HomeComponent implements OnInit, OnDestroy {
             //if content download cancelled
             currentBook.downloadInProgress = false;
             currentBook.downloadProgress = 0;
-            this.bookService.removeFromDownloadQueue(currentBook.accessKey);
 
             if (downloadedItem.state == 'interrupted') {
               this.displayMsgInPopup('Content could not be downloaded, please make sure you are connected to the internet.');
@@ -133,21 +110,63 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
 
+  processContentDownload(downloadedItem: DownloadedItem, currentBook: Book) {
+    //clear item from list of downloaded items
+    this.bookService.removeFromDownloadedBooks(downloadedItem.srcUrl);
+    //unzip content
+    const unzipToPath = downloadedItem.savedAt.substring(0, downloadedItem.savedAt.lastIndexOf('.'));
+    this.commonUtils.unzipContent(downloadedItem.savedAt, unzipToPath).then(
+      () => {
+        //delete zip file
+        this.commonUtils.deleteFileDirAtPath(downloadedItem.savedAt).then(() => {
+          console.log(`deleted zip at ${downloadedItem.savedAt}`);
+        });
+        //set url in list
+        currentBook.contentLocalUrl = this.commonUtils.joinPaths(downloadedItem.savedAt.substring(0, downloadedItem.savedAt.lastIndexOf('.')), 'index.html');
+        //update in db
+        this.bookService.updateBookContentLocalUrl(currentBook).then(() => {
+          console.log(`content detail updated in DB for book : ${currentBook.title}`);
+        })
+        this.changeDetectorRef.detectChanges();
+      },
+      (err) => {
+        console.error(`Could not unzip ${downloadedItem.savedAt}, error:`);
+        console.dir(err);
+        this.displayMsgInPopup('Content could not be processed, please try again later');
+      }
+    )
+  }
+
+
   loadMyBooks() {
     console.log("loading list of my books...");
-    const booksInDownloadQueue: string[] = this.bookService.getBooksInDownloadQueue();
+    //for processing downloads that might have happened when this view compomenent was not visible
+    const itemsInDownloadQueue: string[] = this.bookService.getBooksInDownloadQueue();
+    const downloadedItems: DownloadedItem[] = this.bookService.getDownloadedBooks();
+
     this.bookService.getMyBooks().then(
       (data: Book[]) => {
         data.forEach(book => {
-          if(booksInDownloadQueue.indexOf(book.accessKey) > -1){
+          if (itemsInDownloadQueue.indexOf(book.contentUrl) > -1) {
             book.downloadInProgress = true;
+            book.downloadProgress = 0;
           }
+  
           this.mybooks.push(book);
           this.contentUrlToBookMap.set(book.contentUrl, book);
           this.imageUrlToBookMap.set(book.imageUrl, book);
           this.accessKeyToBookMap.set(book.accessKey, book);
-          
+
         });
+
+        //update books that might have downloaded in background
+        downloadedItems.forEach((downloadedItem) => {
+          if(this.contentUrlToBookMap.has(downloadedItem.srcUrl)){
+            this.processContentDownload(downloadedItem, this.contentUrlToBookMap.get(downloadedItem.srcUrl));
+          }
+          //clear item from list of downloaded items
+          this.bookService.removeFromDownloadedBooks(downloadedItem.srcUrl);
+        })
 
         //display msg if no books available
         if (this.mybooks.length == 0) {
@@ -287,7 +306,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     let currentBook: Book = this.contentUrlToBookMap.get(book.contentUrl);
     currentBook.downloadInProgress = true;
     currentBook.downloadProgress = 0;
-    this.bookService.addToDownloadQueue(currentBook.accessKey);
+    this.bookService.addToDownloadQueue(currentBook.contentUrl);
 
     this.bookService.downloadBookContents(book);
   }
