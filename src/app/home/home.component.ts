@@ -43,10 +43,21 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.downProgressSubscription = this.bookService.getDownloadProgressAsObservable().pipe(throttleTime(500)).subscribe(
       downloadProgress => {
         let currentBook: Book = this.contentUrlToBookMap.get(downloadProgress.url);
-        if (currentBook && downloadProgress.percent > currentBook.downloadProgress) {
+        if (currentBook && downloadProgress.state == "progressing" && downloadProgress.percent > currentBook.downloadProgress) {
           console.log(`Download progress of ${downloadProgress.url.substring(downloadProgress.url.lastIndexOf('/') + 1)}: ${downloadProgress.percent}`);
           currentBook.downloadProgress = downloadProgress.percent;
+          currentBook.downloadInProgress = true;
           this.changeDetectorRef.detectChanges();
+        }
+        else if(currentBook && downloadProgress.state == "interrupted"){
+          //if content download cancelled
+          currentBook.downloadInProgress = false;
+          currentBook.downloadProgress = 0;
+          this.bookService.removeFromDownloadQueue(currentBook.accessKey);
+
+          if (downloadProgress.state == 'interrupted') {
+            this.displayMsgInPopup('Content could not be downloaded, please make sure you are connected to the internet.');
+          }
         }
       }
     );
@@ -61,6 +72,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             currentBook.downloadProgress = 100;
             setTimeout(() => {
               currentBook.downloadInProgress = false;
+              this.bookService.removeFromDownloadQueue(currentBook.accessKey);
               //unzip content
               const unzipToPath = downloadedItem.savedAt.substring(0, downloadedItem.savedAt.lastIndexOf('.'));
               this.commonUtils.unzipContent(downloadedItem.savedAt, unzipToPath).then(
@@ -91,6 +103,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             //if content download cancelled
             currentBook.downloadInProgress = false;
             currentBook.downloadProgress = 0;
+            this.bookService.removeFromDownloadQueue(currentBook.accessKey);
 
             if (downloadedItem.state == 'interrupted') {
               this.displayMsgInPopup('Content could not be downloaded, please make sure you are connected to the internet.');
@@ -122,14 +135,18 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   loadMyBooks() {
     console.log("loading list of my books...");
-
+    const booksInDownloadQueue: string[] = this.bookService.getBooksInDownloadQueue();
     this.bookService.getMyBooks().then(
       (data: Book[]) => {
         data.forEach(book => {
+          if(booksInDownloadQueue.indexOf(book.accessKey) > -1){
+            book.downloadInProgress = true;
+          }
           this.mybooks.push(book);
           this.contentUrlToBookMap.set(book.contentUrl, book);
           this.imageUrlToBookMap.set(book.imageUrl, book);
           this.accessKeyToBookMap.set(book.accessKey, book);
+          
         });
 
         //display msg if no books available
@@ -270,6 +287,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     let currentBook: Book = this.contentUrlToBookMap.get(book.contentUrl);
     currentBook.downloadInProgress = true;
     currentBook.downloadProgress = 0;
+    this.bookService.addToDownloadQueue(currentBook.accessKey);
+
     this.bookService.downloadBookContents(book);
   }
 

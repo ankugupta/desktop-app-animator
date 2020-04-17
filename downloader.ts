@@ -80,3 +80,20 @@ export interface Progress {
     transferredBytes: number;
     totalBytes: number;
 }
+
+export interface DownloadProgress {
+    url: string;
+    state: "progressing" | "interrupted";
+    percent: number;
+    itemTransferredBytes: number;
+    itemTotalBytes: number;
+    receivedBytes: number;
+    totalBytes: number;
+  }
+  
+  export interface DownloadedItem {
+    srcUrl: string,
+    savedAt: string,
+    state: "completed" | "cancelled" | "interrupted"
+  }
+  

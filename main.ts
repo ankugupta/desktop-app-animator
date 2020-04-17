@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain, screen, DownloadItem, shell, dialog, Menu } from "electron";
-import { DownloadOptions } from "./downloader";
+import { DownloadOptions, DownloadProgress } from "./downloader";
 import * as path from "path";
 import * as url from "url";
 import * as fs from "fs";
@@ -203,45 +203,46 @@ function registerListener(session: Electron.session) {
 
     item.on('updated', (event, state) => {
       console.log(`Update event received -- item: ${item.getURL()}, state: ${state}`);
-      if (state == "progressing") {
-
-        receivedBytes = Array.from(downloadItems.values()).reduce((receivedBytes, item) => {
-          receivedBytes += item.getReceivedBytes();
-          return receivedBytes;
-        }, completedBytes);
 
 
-
-        if (showBadge && ['darwin', 'linux'].includes(process.platform)) {
-          app.badgeCount = activeDownloadItems();
-        }
-
-        if (!window_.isDestroyed()) {
-          window_.setProgressBar(progressDownloadItems());
-        }
+      receivedBytes = Array.from(downloadItems.values()).reduce((receivedBytes, item) => {
+        receivedBytes += item.getReceivedBytes();
+        return receivedBytes;
+      }, completedBytes);
 
 
-        const itemTransferredBytes = item.getReceivedBytes();
-        const itemTotalBytes = item.getTotalBytes();
 
-        let downloadProgress = {
-          url: item.getURL(),
-          percent: Math.floor(itemTotalBytes ? (itemTransferredBytes / itemTotalBytes) * 100 : 0),
-          itemTransferredBytes: itemTransferredBytes,
-          itemTotalBytes: itemTotalBytes,
-          totalBytes: totalBytes,
-          receivedBytes: receivedBytes
-
-        }
-
-        console.log(`Download progress:`);
-        console.dir(downloadProgress);
-
-        //send progress to web content that triggered this download
-        if (!webContents.isDestroyed()) {
-          webContents.send("download-progress", downloadProgress);
-        }
+      if (showBadge && ['darwin', 'linux'].includes(process.platform)) {
+        app.badgeCount = activeDownloadItems();
       }
+
+      if (!window_.isDestroyed()) {
+        window_.setProgressBar(progressDownloadItems());
+      }
+
+
+      const itemTransferredBytes = item.getReceivedBytes();
+      const itemTotalBytes = item.getTotalBytes();
+
+      let downloadProgress: DownloadProgress = {
+        url: item.getURL(),
+        state: state,
+        percent: Math.floor(itemTotalBytes ? (itemTransferredBytes / itemTotalBytes) * 100 : 0),
+        itemTransferredBytes: itemTransferredBytes,
+        itemTotalBytes: itemTotalBytes,
+        totalBytes: totalBytes,
+        receivedBytes: receivedBytes
+
+      }
+
+      console.log(`Download progress:`);
+      console.dir(downloadProgress);
+
+      //send progress to web content that triggered this download
+      if (!webContents.isDestroyed()) {
+        webContents.send("download-progress", downloadProgress);
+      }
+
     });
 
     item.on('done', (event, state) => {

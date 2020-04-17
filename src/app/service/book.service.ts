@@ -26,6 +26,8 @@ export class BookService {
   path: typeof path;
   bookAccessKeyToDetailsMap: Map<string, Book> = new Map();
 
+  booksWithDownloadInProgress: string[] = [];
+
   downloadeCompletionSubject: Subject<DownloadedItem> = new Subject();
   downloadProgressSubject: Subject<DownloadProgress> = new Subject();
 
@@ -155,11 +157,26 @@ export class BookService {
     this.ipcRenderer.send("open-modal", url);
   }
 
+  public removeFromDownloadQueue(accessKey: string) {
+    let idx = this.booksWithDownloadInProgress.indexOf(accessKey);
+    if (idx > -1) {
+      this.booksWithDownloadInProgress.splice(idx, 1);
+    }
+  }
+
+  public addToDownloadQueue(accessKey: string) {
+    this.booksWithDownloadInProgress.push(accessKey);
+  }
+
+  public getBooksInDownloadQueue(): string[] {
+    return this.booksWithDownloadInProgress;
+  }
+
 }
 
 export interface DownloadProgress {
   url: string;
-  state: string;
+  state: "progressing" | "interrupted";
   percent: number;
   itemTransferredBytes: number;
   itemTotalBytes: number;
