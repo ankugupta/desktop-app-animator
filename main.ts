@@ -35,7 +35,7 @@ app.on('second-instance', function (e, argv, workingDir) {
       win.restore();
     }
     win.focus();
-    
+
   }
 });
 
@@ -144,6 +144,10 @@ const activeDownloadItems = () => urlToDownDetailsMap.size;
 const progressDownloadItems = () => receivedBytes / totalBytes;
 
 function downloaderCleanup() {
+  downloadItems.forEach((item) => {
+    item.removeAllListeners();
+    item.cancel();
+  })
   downloadItems.clear();
   urlToDownDetailsMap.clear();
 }
@@ -234,7 +238,9 @@ function registerListener(session: Electron.session) {
         console.dir(downloadProgress);
 
         //send progress to web content that triggered this download
-        webContents.send("download-progress", downloadProgress);
+        if (!webContents.isDestroyed()) {
+          webContents.send("download-progress", downloadProgress);
+        }
       }
     });
 
@@ -289,7 +295,9 @@ function registerListener(session: Electron.session) {
         savedAt: item.savePath,
         state: state
       }
-      webContents.send("download-finished", downloadedItem);
+      if (!webContents.isDestroyed()) {
+        webContents.send("download-finished", downloadedItem);
+      }
     });
   };
 
@@ -318,7 +326,9 @@ ipcMain.on('download-file', (event, url) => {
   //trigger download
 
   console.log(`main: triggering download for url : ${url}`);
-  event.sender.downloadURL(url);
+  if (!(event.sender.isDestroyed())) {
+    event.sender.downloadURL(url);
+  }
 });
 
 let modalWindow: BrowserWindow = null;
@@ -381,11 +391,11 @@ ipcMain.handle('delete-file', async (event, pathToDelete: string) => {
   else {
     try {
       if (pathToDelete.startsWith('file:///')) {
-        if(process.platform === 'darwin'){
+        if (process.platform === 'darwin') {
           pathToDelete = pathToDelete.substring('file://'.length);
         }
-        else{
-        pathToDelete = pathToDelete.substring('file:///'.length);
+        else {
+          pathToDelete = pathToDelete.substring('file:///'.length);
         }
       }
       pathToDelete = pathToDelete.split("\\").join("/");

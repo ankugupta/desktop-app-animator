@@ -186,7 +186,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
           //sort
           this.sortBooksDisplayed();
-          
+
           //save book info in DB
           this.bookService.saveBookDetails(book).then(() => {
             console.log(`book saved successfully: ${book.title}`);
@@ -221,7 +221,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   //sorts in descending order - latest book displayed first
-  sortBooksDisplayed(){
+  sortBooksDisplayed() {
     this.mybooks.sort((b1: Book, b2: Book) => {
       return b2.dateAdded.getTime() - b1.dateAdded.getTime();
     })
