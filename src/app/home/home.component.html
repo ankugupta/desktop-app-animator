@@ -13,7 +13,7 @@
                         <img [src]="getImageUrl(book)" [alt]="book.title">
                     </div>
                     <div class="details">
-                        <h2>{{ book.schoolClass }} - {{ book.title }}</h2>
+                        <h2>Chubby Cheeks {{ book.schoolClass }} - {{ book.title }}</h2>
                         <p>Prozo Publishing | School Books by Prozo</p>
                         <p>Date added: {{ book.dateAdded | date }}</p>
                         <div class="downloading" *ngIf="book.downloadInProgress">
@@ -24,13 +24,13 @@
                         </mat-progress-bar>
                         <div class="footerBtns">
                             <span class="spacer"></span>
-                            <button class="greenBtn" mat-raised-button title="Play" (click)="playBookContent(book, idx)" *ngIf="book.contentLocalUrl">
+                            <button class="greenBtn" mat-raised-button title="Play Book" (click)="playBookContent(book, idx)" *ngIf="book.contentLocalUrl">
                                 <mat-icon>play_circle_outline</mat-icon> Play
                             </button>
-                            <button class="blueBtn" mat-raised-button (click)="downloadBookContent(book)" *ngIf="!book.contentLocalUrl" [disabled]="book.downloadInProgress">
+                            <button class="blueBtn" mat-raised-button title="Download Book" (click)="downloadBookContent(book)" *ngIf="!book.contentLocalUrl" [disabled]="book.downloadInProgress">
                                 <mat-icon>cloud_download</mat-icon> Download
                             </button>
-                            <button mat-raised-button color="warn" title="Delete" [disabled]="book.downloadInProgress" (click)="confirmAndDeleteBookContent(book, idx)">
+                            <button mat-raised-button color="warn" title="Delete Book" [disabled]="book.downloadInProgress" (click)="confirmAndDeleteBookContent(book, idx)">
                                 <mat-icon>delete</mat-icon> Delete
                             </button>
                         </div>
