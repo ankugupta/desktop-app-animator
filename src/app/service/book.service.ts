@@ -32,6 +32,8 @@ export class BookService {
   downloadeCompletionSubject: Subject<DownloadedItem> = new Subject();
   downloadProgressSubject: Subject<DownloadProgress> = new Subject();
 
+  modalWinDisplayed = false;
+
   get isElectron(): boolean {
     return !!(win && win.process && win.process.type);
   }
@@ -46,6 +48,7 @@ export class BookService {
       //this.del = win.require('del');
       this.subscribeElectronDownloadCompletions();
       this.subscribeElectronDownloadUpdates();
+      this.subscribeElectronModalDisplay();
     }
 
   }
@@ -102,6 +105,17 @@ export class BookService {
     this.ipcRenderer.on("download-progress", (event, downloadProgress: DownloadProgress) => {
       this.downloadProgressSubject.next(downloadProgress);
     });
+  }
+
+  //subscribe to channel on which modal opened events are published
+  private subscribeElectronModalDisplay(){
+    this.ipcRenderer.on("modal-displayed", (event, modalDisplayed) => {
+      this.modalWinDisplayed = modalDisplayed;
+    });
+  }
+
+  public isModalDisplayed(): boolean {
+    return this.modalWinDisplayed;
   }
 
   //allow subscribers access to download completetion events
@@ -191,9 +205,9 @@ export class BookService {
   }
 
 
-  public playBookContents(url: string): void {
+  public playBookContents(url: string, forceOpen: boolean): void {
     console.log(`Renderer : play book contents from ${url}`);
-    this.ipcRenderer.send("open-modal", url);
+    this.ipcRenderer.send("open-modal", url, forceOpen);
   }
 
 }

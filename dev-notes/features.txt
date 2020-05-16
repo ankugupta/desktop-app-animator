@@ -1,0 +1,11 @@
+naming
+content quality
+
+mac issue
+updates - manual/automatic
+activation and renewal
+cancelling download
+scrollToNewBook
+scrollToAlreadyAddedBook
+sort options
+filter options (downloaded/class)

@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as urlLib from 'url';
 
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 //const electron = (<any>window).require('electron');
@@ -17,6 +18,9 @@ export class CommonUtilService {
   urlLib: typeof urlLib;
   path: typeof path;
 
+  appUpdaterSubject: BehaviorSubject<string> = new BehaviorSubject("");
+
+
   get isElectron(): boolean {
     return !!(win && win.process && win.process.type);
   }
@@ -28,8 +32,39 @@ export class CommonUtilService {
       this.fs = win.require('fs');
       this.path = win.require('path');
       this.urlLib = win.require('url');
+
+      this.subscribeToElectronUpdaterEvents();
     }
 
+  }
+  //subscribe to channel on which app update events are published
+  //feed values to subject
+  private subscribeToElectronUpdaterEvents() {
+
+    this.ipcRenderer.on("updater-message", (event, message: string, info: any) => {
+      if (message == 'UPDATE_AVAILABLE') {
+        message = 'Update Available';
+        if (info && info.version) {
+          message = `Update Available : Version ${info.version}`;
+        }
+        this.appUpdaterSubject.next(message);
+      }
+      else if (message == 'UPDATE_DOWNLOADED') {
+        message = 'Update Downloaded';
+        if (info && info.version) {
+          message = `Update Downloaded : Version ${info.version} <br> App will update itself on next restart`;
+        }
+        this.appUpdaterSubject.next(message);
+
+      }
+    });
+
+  }
+
+
+  //allow subscribers access to app updater events
+  public getAppUpdationAsObservable(): Observable<string> {
+    return this.appUpdaterSubject.asObservable();
   }
 
   //node api - fs
@@ -37,7 +72,7 @@ export class CommonUtilService {
     if (url.startsWith('file:///')) {
       url = url.substring('file:///'.length);
     }
-    if(url.indexOf('%') > -1){
+    if (url.indexOf('%') > -1) {
       url = decodeURI(url);
     }
     return this.fs.existsSync(url);

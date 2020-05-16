@@ -19,7 +19,6 @@ const args = process.argv.slice(1),
   dev = args.some(val => val === '--dev');
 
 
-
 /**
  * handle second-instance open action by user - simply restore and focus the already opened app window
  */
@@ -85,6 +84,12 @@ function createWindow(): BrowserWindow {
     cleanup();
     win = null;
   });
+
+  //init app updater after 30 seconds to ensure view is loaded and provide better ux
+  setTimeout(() => {
+    require('./updater').setupUpdater(win);
+  }, 30000);
+
 
   return win;
 }
@@ -334,11 +339,14 @@ ipcMain.on('download-file', (event, url) => {
 
 let modalWindow: BrowserWindow = null;
 
-ipcMain.on('open-modal', (event, targetUrl) => {
+ipcMain.on('open-modal', (event, targetUrl: string, forceOpen: boolean) => {
   console.log(`main: open modal for url : ${targetUrl}`);
+  if(forceOpen && modalWindow) {
+    modalWindow.close();
+    modalWindow = null;
+  }
   if (!modalWindow) {
     modalWindow = new BrowserWindow({
-      parent: win,
       modal: true,
       show: false,
       resizable: false
@@ -348,9 +356,14 @@ ipcMain.on('open-modal', (event, targetUrl) => {
 
     modalWindow.once('ready-to-show', () => {
       modalWindow.show();
+
+      //tell UI a modal is opened
+      event.sender.send("modal-displayed", true);
     });
     modalWindow.on('closed', () => {
       modalWindow = null;
+      //tell UI a modal is closed
+      event.sender.send("modal-displayed", false);
     });
   }
   else {
@@ -358,6 +371,12 @@ ipcMain.on('open-modal', (event, targetUrl) => {
   }
 });
 
+function cleanUpModals() {
+  if(modalWindow){
+    modalWindow.close();
+    modalWindow = null;
+  }
+}
 
 ipcMain.handle('unzip-file', async (event, srcPath, destPath) => {
   let result: { status: 'success' | 'error', srcPath: string, destPath: string, err?: any } = {
@@ -417,5 +436,6 @@ ipcMain.handle('delete-file', async (event, pathToDelete: string) => {
  * perform clean-up activities for different sections
  */
 function cleanup() {
+  cleanUpModals();
   downloaderCleanup();
 }

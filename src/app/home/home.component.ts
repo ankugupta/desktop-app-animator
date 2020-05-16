@@ -151,7 +151,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             book.downloadInProgress = true;
             book.downloadProgress = 0;
           }
-  
+
           this.mybooks.push(book);
           this.contentUrlToBookMap.set(book.contentUrl, book);
           this.imageUrlToBookMap.set(book.imageUrl, book);
@@ -161,7 +161,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         //update books that might have downloaded in background
         downloadedItems.forEach((downloadedItem) => {
-          if(this.contentUrlToBookMap.has(downloadedItem.srcUrl)){
+          if (this.contentUrlToBookMap.has(downloadedItem.srcUrl)) {
             this.processContentDownload(downloadedItem, this.contentUrlToBookMap.get(downloadedItem.srcUrl));
           }
           //clear item from list of downloaded items
@@ -275,13 +275,35 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   playBookContent(book: Book, index: number) {
-    //invoke service method for book content play
-
+    
     if (this.commonUtils.isFileExists(book.contentLocalUrl)) {
-      console.log(`content found locally..opening`);
-      this.bookService.playBookContents(this.commonUtils.formatUrl(book.contentLocalUrl));
+      console.log(`content found locally..check if a book is already open`);
+      
+      if (this.bookService.isModalDisplayed()) {
+        let confirmDialog = this.dialog.open(ConfirmationDialogComponent, {
+          width: '400px',
+          disableClose: true,
+          data: {
+            msg: "A book is already open. Would you like to close it and open this book?",
+            okButtonText: "Yes",
+            cancelButtonText: "No"
+          }
+        });
+
+        confirmDialog.afterClosed().subscribe(data => {
+          console.log("User pressed " + data.buttonPressed);
+          if (data.buttonPressed == "Yes") {
+            this.bookService.playBookContents(this.commonUtils.formatUrl(book.contentLocalUrl), true);
+          }
+        });
+      }
+      else{
+        //no book is currently opened - safe to open this book
+        this.bookService.playBookContents(this.commonUtils.formatUrl(book.contentLocalUrl), true);
+      }
     }
     else {
+      //book contents not found
       let confirmDialog = this.dialog.open(ConfirmationDialogComponent, {
         width: '400px',
         disableClose: true,

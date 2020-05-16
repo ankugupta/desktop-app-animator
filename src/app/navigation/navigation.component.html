@@ -2,7 +2,10 @@
     <!-- <a mat-list-item routerLink="/home" routerLinkActive="active">
         <mat-icon>home</mat-icon> Home </a> -->
     <a mat-list-item routerLink="home" routerLinkActive="active">
-        <mat-icon>local_library</mat-icon> Library </a>
+        <mat-icon>local_library</mat-icon> Library
+    </a>
     <a mat-list-item routerLink="about" routerLinkActive="active">
-        <mat-icon>description</mat-icon> About Us </a>
+        <mat-icon>description</mat-icon> About Us
+    </a>
+    <p mat-list-item [innerHTML]="appUpdateMessage" *ngIf="appUpdateMessage"></p>
 </mat-nav-list>

@@ -23,11 +23,27 @@
     "!browserslist",
     "!**/{angular.json,angular.webpack.js,tsconfig.spec.json,tslint.json,tsconfig-serve.json,tsconfig.app.json,tsconfig.json}"
   ],
+  "publish": {
+    "provider": "s3",
+    "bucket": "book-animator",
+    "path": "/prod-desktop/prozo-app-releases/"
+  },
   "win": {
     "icon": "dist/DigiBook",
     "target": [
-      "nsis"
-    ]
+      {
+        "target": "nsis",
+        "arch": [
+          "x64",
+          "ia32"
+        ]
+      }
+    ],
+    "publisherName": "Prozo"
+  },
+  "nsis": {
+    "deleteAppDataOnUninstall": true,
+    "createDesktopShortcut": "always"
   },
   "mac": {
     "icon": "dist/DigiBook",
