@@ -38,8 +38,7 @@
           "ia32"
         ]
       }
-    ],
-    "publisherName": "Prozo"
+    ]
   },
   "nsis": {
     "deleteAppDataOnUninstall": true,

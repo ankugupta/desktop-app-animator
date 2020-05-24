@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   downProgressSubscription: Subscription;
   downCompleteSubscription: Subscription;
 
-  readonly NO_BOOKS_MSG = "No books are available in the library.<br> Please click the ADD NEW BOOK button to download a book.";
+  readonly NO_BOOKS_MSG = "No books are available in the library.<br> Please click the ADD NEW BOOK button to download a book";
 
   constructor(
     public dialog: MatDialog,

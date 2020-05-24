@@ -6,6 +6,8 @@ import * as fs from "fs";
 import * as unzipper from 'unzipper';
 import * as del from 'del';
 
+app.disableHardwareAcceleration();
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: BrowserWindow = null;
