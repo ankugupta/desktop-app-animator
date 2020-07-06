@@ -1,6 +1,6 @@
 {
-  "appId": "com.prozo.desktop.book.animator",
-  "productName": "Prozo",
+  "appId": "com.printmirchi.desktop.book.animator",
+  "productName": "Print Mirchi",
   "directories": {
     "output": "release/"
   },
@@ -26,7 +26,7 @@
   "publish": {
     "provider": "s3",
     "bucket": "book-animator",
-    "path": "/prod-desktop/prozo-app-releases/"
+    "path": "/prod-desktop/print-mirchi-app-releases/"
   },
   "win": {
     "icon": "dist/DigiBook",

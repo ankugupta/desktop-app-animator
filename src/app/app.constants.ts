@@ -1,5 +1,5 @@
 export const API_ENDPOINT = "http://ec2-15-206-51-194.ap-south-1.compute.amazonaws.com:8081/animator";
-export const PUBLISHER = "Pub0004_Prozo";
+export const PUBLISHER = "Pub0005_SkyBooks";
 //http://ec2-15-206-51-194.ap-south-1.compute.amazonaws.com/animator/publisher/P2/digitalbooks
 export const BOOKS_URI = API_ENDPOINT + "/publisher/" + PUBLISHER + "/digitalbooks?accessKey={accessKey}";
 
