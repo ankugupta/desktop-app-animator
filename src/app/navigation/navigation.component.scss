@@ -2,9 +2,18 @@
     padding: 50px 10px 0;
 }
 
+a {
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+}
+
 .active,
 a:hover {
-    background: #78438b !important;
+    background: #99bb15 !important;
     color: #fff !important;
     border-radius: 10px;
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
 }
