@@ -13,7 +13,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
   appUpdatesSubscription: Subscription;
 
-  appUpdateMessage = "";
+  appUpdateMessage = "Update Available : Version 2.0.0 <br> App will update itself on next restart";
 
   constructor(
     private commonUtils: CommonUtilService,
@@ -24,7 +24,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
     this.appUpdatesSubscription = this.commonUtils.getAppUpdationAsObservable().subscribe(
       message => {
-        this.appUpdateMessage = message;
+        //this.appUpdateMessage = message;
         this.changeDetectorRef.detectChanges();
       }
     );

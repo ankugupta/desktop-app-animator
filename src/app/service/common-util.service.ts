@@ -42,17 +42,17 @@ export class CommonUtilService {
   private subscribeToElectronUpdaterEvents() {
 
     this.ipcRenderer.on("updater-message", (event, message: string, info: any) => {
-      if (message == 'UPDATE_AVAILABLE') {
-        message = 'Update Available';
+      // if (message == 'UPDATE_AVAILABLE') {
+      //   message = 'Update Available';
+      //   if (info && info.version) {
+      //     message = `Update Available : Version ${info.version}`;
+      //   }
+      //   this.appUpdaterSubject.next(message);
+      // }
+      if (message == 'UPDATE_DOWNLOADED') {
+        message = 'Update Available - Will be installed on next restart';
         if (info && info.version) {
-          message = `Update Available : Version ${info.version}`;
-        }
-        this.appUpdaterSubject.next(message);
-      }
-      else if (message == 'UPDATE_DOWNLOADED') {
-        message = 'Update Downloaded';
-        if (info && info.version) {
-          message = `Update Downloaded : Version ${info.version} <br> App will update itself on next restart`;
+          message = `Update Available : Version ${info.version} <br> App will update itself on next restart`;
         }
         this.appUpdaterSubject.next(message);
 
