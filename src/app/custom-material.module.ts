@@ -10,7 +10,8 @@ import {
   MatDialogModule,
   MatFormFieldModule,
   MatInputModule,
-  MatProgressBarModule, 
+  MatProgressBarModule,
+  MatSnackBarModule, 
 } from '@angular/material';
 
 
@@ -30,7 +31,8 @@ import {
     MatFormFieldModule,
     MatInputModule,
     MatCardModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatSnackBarModule
   ]
 })
 export class CustomMaterialModule { }

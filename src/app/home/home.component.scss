@@ -19,9 +19,9 @@
     .thumb {
         overflow: hidden;
         height: 220px;
-        margin: -16px -16px -16px;
+        margin: -16px -16px -16px 0;
         float: left;
-        width: 15%;
+        width: 12%;
         margin-right: 2%;
         img {
             height: 100%;
@@ -30,7 +30,7 @@
     }
     .details {
         float: left;
-        width: 83%;
+        width: 85%;
         position: relative;
         h2 {
             font-size: 18px;
