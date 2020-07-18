@@ -17,3 +17,10 @@ a:hover {
     -moz-transition: all 0.4s;
     transition: all 0.4s;
 }
+::ng-deep snack-bar-container.updater-message{
+    opacity: 0.9 !important;
+    font-size: small !important;
+    color: white !important;
+    padding: 6px 10px !important;
+    background-color: darkgray;
+}

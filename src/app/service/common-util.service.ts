@@ -50,7 +50,7 @@ export class CommonUtilService {
       //   this.appUpdaterSubject.next(message);
       // }
       if (message == 'UPDATE_DOWNLOADED') {
-        message = 'Update Available - Will be installed on next restart';
+        message = 'Update Available <br> App will update itself on next restart';
         if (info && info.version) {
           message = `Update Available : Version ${info.version} <br> App will update itself on next restart`;
         }

@@ -4,6 +4,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 
 import { CommonUtilService } from '../service/common-util.service';
 import { MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition, MatSnackBar } from '@angular/material';
+import { UpdaterSnackBarComponent } from './updater-snack-bar/updater-snack-bar.component';
 
 @Component({
   selector: 'app-navigation',
@@ -15,8 +16,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
   appUpdatesSubscription: Subscription;
 
-  appUpdateMessage = "Update Available : Version 2.0.0 <br> App will update itself on next restart";
-
   constructor(
     private commonUtils: CommonUtilService,
     private changeDetectorRef: ChangeDetectorRef,
@@ -25,20 +24,23 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-this.openSnackBar();
     this.appUpdatesSubscription = this.commonUtils.getAppUpdationAsObservable().subscribe(
       message => {
-        //this.appUpdateMessage = message;
-        this.changeDetectorRef.detectChanges();
+        if (message) {
+          this.openSnackBar(message);
+          this.changeDetectorRef.detectChanges();
+        }
       }
     );
 
   }
 
-  openSnackBar() {
-    this._snackBar.open('Cannonball!!', 'End now', {
-      horizontalPosition: 'center',
+  openSnackBar(message: string) {
+    this._snackBar.openFromComponent(UpdaterSnackBarComponent, {
+      horizontalPosition: 'right',
       verticalPosition: 'bottom',
+      data: { message: message },
+      panelClass: ['updater-message']
     });
   }
 
