@@ -6,6 +6,7 @@ import * as fs from "fs";
 import * as unzipper from 'unzipper';
 import * as del from 'del';
 
+//Required for compatibility
 app.disableHardwareAcceleration();
 
 // Keep a global reference of the window object, if you don't, the window will

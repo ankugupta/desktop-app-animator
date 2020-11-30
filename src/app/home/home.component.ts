@@ -133,6 +133,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         console.error(`Could not unzip ${downloadedItem.savedAt}, error:`);
         console.dir(err);
         this.displayMsgInPopup('Content could not be processed, please try again later');
+        this.changeDetectorRef.detectChanges();
       }
     )
   }
