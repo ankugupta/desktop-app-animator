@@ -1,17 +1,15 @@
 {
     "name": "prozo",
-    "version": "0.2.5",
+    "version": "0.2.6",
     "description": "A simple digital book library",
     "author": {
         "name": "Ankit GUPTA",
         "email": "ankitkumar465@gmail.com"
     },
-    "contributors": [
-        {
-            "name": "Ritesh Singh",
-            "email": "ritesh.singh1906@gmail.com"
-        }
-    ],
+    "contributors": [{
+        "name": "Ritesh Singh",
+        "email": "ritesh.singh1906@gmail.com"
+    }],
     "main": "main.js",
     "private": true,
     "scripts": {

@@ -7,11 +7,13 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
+
             <mat-card *ngFor="let book of mybooks; index as idx">
-                <div class="row">
+                <mat-toolbar>
                     <div class="thumb">
                         <img [src]="getImageUrl(book)" [alt]="book.title">
                     </div>
+                    <span class="example-spacer"></span>
                     <div class="details">
                         <h2>Chubby Cheeks {{ book.schoolClass }} - {{ book.title }}</h2>
                         <p>Prozo Publishing | School Books by Prozo</p>
@@ -35,7 +37,7 @@
                             </button>
                         </div>
                     </div>
-                </div>
+                </mat-toolbar>
             </mat-card>
         </div>
     </div>
